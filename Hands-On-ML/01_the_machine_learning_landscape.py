@@ -2,7 +2,7 @@
 # ms-python.python added
 import os
 try:
-	os.chdir(os.path.join(os.getcwd(), 'datasets/Hands-On-ML/handson-ml'))
+	os.chdir(os.path.join(os.getcwd(), 'Hands-On-ML'))
 	print(os.getcwd())
 except:
 	pass
@@ -13,7 +13,9 @@ except:
 #%% [markdown]
 # # Setup
 #%% [markdown]
-# First, let's make sure this notebook works well in both python 2 and 3, import a few common modules, ensure MatplotLib plots figures inline and prepare a function to save the figures:
+# First, let's make sure this notebook works well in both python 2 and 3, 
+# import a few common modules, ensure MatplotLib plots figures inline and 
+# prepare a function to save the figures:
 
 #%%
 # To support both python 2 and python 3
@@ -27,7 +29,7 @@ import os
 np.random.seed(42)
 
 # To plot pretty figures
-#get_ipython().run_line_magic('matplotlib', 'inline')
+get_ipython().run_line_magic('matplotlib', 'inline')
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 mpl.rc('axes', labelsize=14)
@@ -35,7 +37,7 @@ mpl.rc('xtick', labelsize=12)
 mpl.rc('ytick', labelsize=12)
 
 # Where to save the figures
-PROJECT_ROOT_DIR = os.getcwd()
+PROJECT_ROOT_DIR = "."
 CHAPTER_ID = "fundamentals"
 
 def save_fig(fig_id, tight_layout=True):
@@ -52,7 +54,9 @@ warnings.filterwarnings(action="ignore", message="^internal gelsd")
 #%% [markdown]
 # # Code example 1-1
 #%% [markdown]
-# This function just merges the OECD's life satisfaction data and the IMF's GDP per capita data. It's a bit too long and boring and it's not specific to Machine Learning, which is why I left it out of the book.
+# This function just merges the OECD's life satisfaction data and the IMF's GDP per capita data. 
+# It's a bit too long and boring and it's not specific to Machine Learning, which is why 
+# I left it out of the book.
 
 #%%
 def prepare_country_stats(oecd_bli, gdp_per_capita):
@@ -68,7 +72,8 @@ def prepare_country_stats(oecd_bli, gdp_per_capita):
     return full_country_stats[["GDP per capita", 'Life satisfaction']].iloc[keep_indices]
 
 #%% [markdown]
-# The code in the book expects the data files to be located in the current directory. I just tweaked it here to fetch the files in datasets/lifesat.
+# The code in the book expects the data files to be located in the current directory. I just tweaked 
+# it here to fetch the files in datasets/lifesat.
 
 #%%
 import os
@@ -78,12 +83,11 @@ datapath = os.path.join("datasets", "lifesat", "")
 #%%
 # Code example
 import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set(style="darkgrid")
 import numpy as np
 import pandas as pd
-#import sklearn.linear_model # one option
-import sklearn.neighbors # another option
-import seaborn as sns
-sns.set()
+import sklearn.linear_model
 
 # Load the data
 oecd_bli = pd.read_csv(datapath + "oecd_bli_2015.csv", thousands=',')
@@ -91,7 +95,7 @@ gdp_per_capita = pd.read_csv(datapath + "gdp_per_capita.csv",thousands=',',delim
                              encoding='latin1', na_values="n/a")
 
 # Prepare the data
-country_stats = prepare_country_stats(oecd_bli, gdp_per_capita) # takes out what we want
+country_stats = prepare_country_stats(oecd_bli, gdp_per_capita)
 X = np.c_[country_stats["GDP per capita"]]
 y = np.c_[country_stats["Life satisfaction"]]
 
@@ -100,8 +104,7 @@ country_stats.plot(kind='scatter', x="GDP per capita", y='Life satisfaction')
 plt.show()
 
 # Select a linear model
-#model = sklearn.linear_model.LinearRegression() # one option
-model = sklearn.neighbors.KNeighborsRegressor(n_neighbors=3) # another option
+model = sklearn.linear_model.LinearRegression()
 
 # Train the model
 model.fit(X, y)
@@ -111,8 +114,27 @@ X_new = [[22587]]  # Cyprus' GDP per capita
 print(model.predict(X_new)) # outputs [[ 5.96242338]]
 
 
+#%%
+
+
+
+#%%
+
+
+
+#%%
+
+
 #%% [markdown]
 # # Note: you can ignore the rest of this notebook, it just generates many of the figures in chapter 1.
+
+#%%
+
+
+
+#%%
+
+
 
 #%%
 
@@ -265,8 +287,7 @@ sample_data[7:10]
 #%%
 backup = oecd_bli, gdp_per_capita
 
-
-""" def prepare_country_stats(oecd_bli, gdp_per_capita):
+def prepare_country_stats(oecd_bli, gdp_per_capita):
     oecd_bli = oecd_bli[oecd_bli["INEQUALITY"]=="TOT"]
     oecd_bli = oecd_bli.pivot(index="Country", columns="Indicator", values="Value")
     gdp_per_capita.rename(columns={"2015": "GDP per capita"}, inplace=True)
@@ -276,7 +297,8 @@ backup = oecd_bli, gdp_per_capita
     full_country_stats.sort_values(by="GDP per capita", inplace=True)
     remove_indices = [0, 1, 6, 8, 33, 34, 35]
     keep_indices = list(set(range(36)) - set(remove_indices))
-    return full_country_stats[["GDP per capita", 'Life satisfaction']].iloc[keep_indices] """
+    return full_country_stats[["GDP per capita", 'Life satisfaction']].iloc[keep_indices]
+
 
 #%%
 # Code example
@@ -412,8 +434,8 @@ plt.show()
 #%%
 backup = oecd_bli, gdp_per_capita
 
-""" def prepare_country_stats(oecd_bli, gdp_per_capita):
-    return sample_data """
+def prepare_country_stats(oecd_bli, gdp_per_capita):
+    return sample_data
 
 
 #%%
