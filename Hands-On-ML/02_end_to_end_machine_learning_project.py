@@ -4,7 +4,7 @@
 # ms-python.python added
 import os
 try:
-	os.chdir('/mnt/rOjterQsync/Programmering/Jupyter/datasets/Hands-On-ML/handson-ml')
+	os.chdir(os.path.join(os.getcwd(),''))
 	print(os.getcwd())
 except:
 	pass

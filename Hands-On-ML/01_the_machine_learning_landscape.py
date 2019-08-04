@@ -1,8 +1,9 @@
-#%% Change working directory from the workspace root to the ipynb file location. Turn this addition off with the DataScience.changeDirOnImportExport setting
+#%% Change working directory from the workspace root to the ipynb file location. 
+# Turn this addition off with the DataScience.changeDirOnImportExport setting
 # ms-python.python added
 import os
 try:
-	os.chdir(os.path.join(os.getcwd(), 'Hands-On-ML'))
+	os.chdir(os.path.join(os.getcwd(),''))
 	print(os.getcwd())
 except:
 	pass
@@ -29,7 +30,7 @@ import os
 np.random.seed(42)
 
 # To plot pretty figures
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 mpl.rc('axes', labelsize=14)

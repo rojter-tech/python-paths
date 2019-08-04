@@ -2,7 +2,7 @@
 # ms-python.python added
 import os
 try:
-	os.chdir(os.path.join(os.getcwd(), 'datasets/Hands-On-ML/handson-ml'))
+	os.chdir(os.path.join(os.getcwd(),''))
 	print(os.getcwd())
 except:
 	pass
