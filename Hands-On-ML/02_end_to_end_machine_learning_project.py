@@ -129,7 +129,6 @@ housing.hist(bins=50, figsize=(20,15))
 save_fig("attribute_histogram_plots")
 plt.show()
 
-
 #%%
 # to make this notebook's output identical at every run
 np.random.seed(42)
@@ -384,7 +383,6 @@ housing.plot(kind="scatter", x="rooms_per_household", y="median_house_value",
 plt.axis([0, 5, 0, 520000])
 plt.show()
 
-
 #%%
 housing.describe()
 
@@ -407,7 +405,6 @@ sample_incomplete_rows.dropna(subset=["total_bedrooms"])    # option 1
 
 #%%
 sample_incomplete_rows.drop("total_bedrooms", axis=1)       # option 2
-
 
 #%%
 median = housing["total_bedrooms"].median()
@@ -655,12 +652,12 @@ housing_prepared = full_pipeline.fit_transform(housing)
 
 
 #%%
-housing_prepared
-
+housing_prepared[:5]
 
 #%%
 housing_prepared.shape
-
+#%%
+pd.DataFrame(housing_prepared).hist(bins=50, figsize=(20,15))
 #%% [markdown]
 # For reference, here is the old solution based on a `DataFrameSelector` transformer 
 # (to just select a subset of the Pandas `DataFrame` columns), and a `FeatureUnion`:
@@ -904,11 +901,10 @@ cvres = rnd_search.cv_results_
 for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
     print(np.sqrt(-mean_score), params)
 
-
 #%%
 feature_importances = grid_search.best_estimator_.feature_importances_
-feature_importances
-
+for printout in feature_importances:
+    print(printout*100)
 
 #%%
 extra_attribs = ["rooms_per_hhold", "pop_per_hhold", "bedrooms_per_room"]
@@ -916,7 +912,7 @@ extra_attribs = ["rooms_per_hhold", "pop_per_hhold", "bedrooms_per_room"]
 cat_encoder = full_pipeline.named_transformers_["cat"]
 cat_one_hot_attribs = list(cat_encoder.categories_[0])
 attributes = num_attribs + extra_attribs + cat_one_hot_attribs
-sorted(zip(feature_importances, attributes), reverse=True)
+sorted(zip(feature_importances*100, attributes), reverse=True)
 
 
 #%%
@@ -940,7 +936,6 @@ final_rmse
 
 #%%
 from scipy import stats
-
 
 #%%
 confidence = 0.95
