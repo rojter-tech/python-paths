@@ -887,8 +887,10 @@ fcast.head()
 #%%
 ## This codesnippet relies on pandas version < 0.24.2
 import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
 fig, ax = plt.subplots(figsize = (12, 8))
-mymodel.plot(fcast, ax = ax);
+mymodel.plot(fcast, ax = ax)
 plt.ylabel('Temperature (F)')
 plt.xlabel('Year')
 plt.legend()
