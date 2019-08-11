@@ -1,16 +1,11 @@
-# To add a new cell, type '#%%'
-# To add a new markdown cell, type '#%% [markdown]'
 #%% Change working directory from the workspace root to the ipynb file location. Turn this addition off with the DataScience.changeDirOnImportExport setting
 # ms-python.python added
 import os
 try:
-	os.chdir(os.path.join(os.getcwd(), 'mining-time-data-series/script and datasets'))
+	os.chdir(os.path.join(os.getcwd(), 'script-and-datasets'))
 	print(os.getcwd())
 except:
 	pass
-#%%
-from IPython import get_ipython
-
 #%% [markdown]
 # # Module: Introduction
 
@@ -26,12 +21,14 @@ mylynx_df = pd.read_csv("LYNXdata.csv", header = 0,
                      names = ['year', 'trappings'],
                      index_col = 0)
 
+
 #%%
 # Read in the 'nottem' dataset
 # Make sure that nottem.csv is at the same location as this python notebook
 nottem_df = pd.read_csv("nottem.csv", header = 0,
                         names = ['index', 'temp'],
                         index_col = 0)
+
 
 #%%
 mylynx_df.head()
@@ -74,8 +71,7 @@ nottemts.head()
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set()
+
 
 #%%
 # Importing the data with pandas and using its 'year' column for the index
@@ -308,9 +304,9 @@ mylynx_df.head()
 # Converting the DataFrame into a Series object
 # ARIMA modeling requires a tuple index
 mylynxts = pd.Series(mylynx_df['trappings'].values,
-                 index = pd.DatetimeIndex(data = (tuple(pd.date_range('31/12/1821',
-                                                                    periods = 114,
-                                                                    freq = 'A-DEC'))),
+            index = pd.DatetimeIndex(data = (tuple(pd.date_range('31/12/1821',
+                                                                  periods = 114,
+                                                                  freq = 'A-DEC'))),
                                             freq = 'A-DEC'))
 
 
@@ -324,7 +320,7 @@ from statsmodels.tsa.arima_model import ARIMA
 
 
 #%%
-help(ARIMA)
+#help(ARIMA)
 
 
 #%%
@@ -391,6 +387,10 @@ results_AR2.resid.tail()
 #%%
 # Original series - fitted values = model residuals
 (mylynxts - results_AR2.fittedvalues).tail()
+
+
+#%%
+list(results_AR2.resid)[-5:]
 
 
 #%%
@@ -493,6 +493,7 @@ plt.plot(Fcast400, color='red', linewidth = 2,
 plt.plot(Fcast202, color='blue', linewidth = 2,
          label = "ARIMA 2 0 2")
 plt.legend()
+plt.show()
 
 #%% [markdown]
 # # Module: Handling Seasonal Datasets and Working with Seasonality
@@ -590,11 +591,55 @@ help(pm.auto_arima)
 mySA = pm.auto_arima(nottemts, error_action="ignore", suppress_warnings = True,
                      seasonal = True, m = 12, start_q = 1, start_p = 1, 
                      start_Q = 0, start_P = 0, max_order = 5, max_d = 1,
-                     max_D = 1, D = 1, stepwise = False, trace = True)
+                     max_D = 1, D = 1, stepwise = False, trace = True, 
+                     parallel=True, n_jobs=16)
+# n_jobs = 16
 
 
 #%%
 mySA.summary()
+
+
+#%%
+mySA.summary()
+
+
+#%%
+import statsmodels.api as sm
+help(sm.tsa.SARIMAX)
+
+
+#%%
+data = nottemts.copy()
+# define model configuration
+my_order = (4, 0, 2)
+my_seasonal_order = (1, 1, 1, 12)
+# define model
+model = sm.tsa.SARIMAX(data, order=my_order, seasonal_order=my_seasonal_order)
+
+
+#%%
+model_fit = model.fit()
+
+
+#%%
+ystar = model_fit.predict(start=12,end=len(data))
+yhat = model_fit.forecast(12)
+ystar.tail()
+
+
+#%%
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12,9))
+plt.scatter(nottemts.index,nottemts, label="data", marker=".", color='black')
+plt.plot(ystar, label="SARIMA[402][111,12]")
+plt.plot(yhat, label="12 instance forecast")
+plt.legend()
+
+
+#%%
+
 
 
 #%%
@@ -721,7 +766,7 @@ nottemts = pd.Series((nottem.Temp).values,
 #%%
 # Exponential smoothing function
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
-help(ExponentialSmoothing)
+#help(ExponentialSmoothing)
 
 
 #%%
@@ -758,7 +803,7 @@ expsfcast = expsmodelfit.predict(start = 240, end = 251)
 plt.figure(figsize=(12,8))
 plt.plot(nottemts, label='data')
 plt.plot(expsfcast, label='HW forecast')
-plt.xlim('1920','1941'); plt.ylim(30,70);
+plt.xlim('1920','1940'); plt.ylim(30,70);
 plt.legend()
 
 
@@ -793,6 +838,10 @@ from fbprophet import Prophet
 # Importing the nottem dataset as a pandas DataFrame
 # Make sure that nottem.csv is in the same folder as this python notebook
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+#import seaborn as sns
+#sns.set()
 nottem = pd.read_csv("nottem.csv", header = 0, names = ['Month', 'Temp'],
                      index_col = 0)
 # Generating the time stamp
@@ -801,6 +850,10 @@ nottemts = pd.Series((nottem.Temp).values,
                                            periods = 240,
                                            freq = 'M'))
 nottemts.head()
+
+
+#%%
+nottem.head()
 
 
 #%%
@@ -817,6 +870,9 @@ nottem_df.dtypes
 #%%
 # Make the prophet model and fit on the data
 mymodel = Prophet()
+
+
+#%%
 mymodel.fit(nottem_df)
 
 
@@ -825,16 +881,28 @@ mymodel.fit(nottem_df)
 future_data = mymodel.make_future_dataframe(periods = 12,
                                             freq = 'm')
 fcast = mymodel.predict(future_data)
+fcast.head()
 
 
 #%%
+## This codesnippet relies on pandas version < 0.24.2
 import matplotlib.pyplot as plt
-fig, ax1 = plt.subplots(1,1, figsize = (12, 8))
-mymodel.plot(fcast, ax = ax1);
+fig, ax = plt.subplots(figsize = (12, 8))
+mymodel.plot(fcast, ax = ax);
 plt.ylabel('Temperature (F)')
 plt.xlabel('Year')
 plt.legend()
 
+
+# for pandas version > 0.24.1
+# pd.plotting.register_matplotlib_converters()
+#mymodel.plot(fcast, ax = ax, ylabel='Temperature (F)',xlabel='Year',);
+#ax.plot(fcast['ds'], fcast['yhat'])
+#ax.legend()
+#plt.plot(fcast)
+
+#%% [markdown]
+# ## mymodel extract info ??
 
 #%%
 
