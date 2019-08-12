@@ -238,3 +238,6 @@ assert acc.get()[1] > 0.98, "Achieved accuracy (%f) is lower than expected (0.98
 # In this tutorial, we have learned how to use MXNet to solve a standard computer vision problem: 
 # classifying images of hand written digits. You have seen how to quickly and easily build, train 
 # and evaluate models such as MLP and CNN with MXNet.
+
+
+#%%
