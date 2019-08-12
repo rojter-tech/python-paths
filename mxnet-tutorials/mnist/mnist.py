@@ -18,7 +18,8 @@ mnist = mx.test_utils.get_mnist()
 mx.random.seed(42)
 
 # Set the compute context, GPU is available otherwise CPU
-ctx = mx.gpu() if mx.context.num_gpus() else mx.cpu()
+#ctx = mx.gpu() if mx.context.num_gpus() else mx.cpu()
+ctx = mx.gpu()
 
 #%%
 # initialize the data iterators for the MNIST dataset
