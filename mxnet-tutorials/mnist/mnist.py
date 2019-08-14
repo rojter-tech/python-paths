@@ -22,13 +22,13 @@ mx.random.seed(42)
 ctx = mx.gpu()
 
 #%%
-# initialize the data iterators for the MNIST dataset
+# INITIALIZE the data iterators for the MNIST dataset
 batch_size = 100
 train_iter = mx.io.NDArrayIter(mnist['train_data'], mnist['train_label'], batch_size, shuffle=True)
 val_iter = mx.io.NDArrayIter(mnist['test_data'], mnist['test_label'], batch_size)
 
 #%%
-# Training
+# Training - Multilayer Perceptron
 #
 
 # Multilayer Perceptron
@@ -165,9 +165,6 @@ assert acc.get()[1] > 0.96, "Achieved accuracy (%f) is lower than expected (0.96
 
 #### PERCEPTRON DONE ####
 #%%
-
-
-#################################
 # Convolutional Neural Network  #
 #################################
 
