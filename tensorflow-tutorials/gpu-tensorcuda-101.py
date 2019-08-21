@@ -1,9 +1,8 @@
 #%%
-from __future__ import absolute_import, division, print_function, unicode_literals
+#from __future__ import absolute_import, division, print_function, unicode_literals
 import tensorflow as tf
 #%%
-gpuavail = "GPU Available: ", tf.test.is_gpu_available()
-print(gpuavail)
+
 #%%
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 print(sess)
