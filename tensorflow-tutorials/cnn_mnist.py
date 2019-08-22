@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+#%%
 """Convolutional Neural Network Estimator for MNIST, built with tf.layers."""
 
 from __future__ import absolute_import
@@ -22,7 +23,7 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-
+#%%
 def cnn_model_fn(features, labels, mode):
   """Model function for CNN."""
   # Input Layer
@@ -114,7 +115,7 @@ def cnn_model_fn(features, labels, mode):
   return tf.estimator.EstimatorSpec(
       mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
-
+#%%
 def main(unused_argv):
   # Load training and eval data
   mnist = tf.contrib.learn.datasets.load_dataset("mnist")
@@ -145,12 +146,13 @@ def main(unused_argv):
       steps=20000,
       hooks=[logging_hook])
 
+#%%
   # Evaluate the model and print results
   eval_input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
       x={"x": eval_data}, y=eval_labels, num_epochs=1, shuffle=False)
   eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
   print(eval_results)
 
-
+#%%
 if __name__ == "__main__":
   tf.app.run()
