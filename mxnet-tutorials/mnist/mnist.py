@@ -1,7 +1,7 @@
 #%%
 import os
 try:
-	os.chdir("/mnt/rOjterQsync/Github/python-paths/mxnet-tutorials/mnist")
+	os.chdir("/home/dreuter/Github/python-paths/mxnet-tutorials/mnist")
 	print(os.getcwd())
 except:
 	pass
