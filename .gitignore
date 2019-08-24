@@ -1,6 +1,8 @@
 *.tar
 *.tar.gz
 *.gz
+.vscode
+settings.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
