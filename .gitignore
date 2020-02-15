@@ -5,6 +5,8 @@
 *.gz
 .vscode
 settings.json
+bitcoin.csv
+bitcoin.csv*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
